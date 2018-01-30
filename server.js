@@ -21,6 +21,11 @@ const app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
+// DB set-up
+const Sequelize = require('sequelize');
+const sequelize = new Sequelize('famous-amos-development', 'donovanadams', process.env.SQLPASS, {
+    dialect: 'postgres'
+});
 // override with POST having ?_method=DELETE or ?_method=PUT
 app.use(methodOverride('_method'))
 
@@ -37,6 +42,14 @@ app.use('/pets', pets);
 app.use('/pets/:petId/comments', comments);
 app.use(purchases);
 
+sequelize
+  .authenticate()
+  .then(() => {
+    console.log('Connection has been established successfully.');
+  })
+  .catch(err => {
+    console.error('Unable to connect to the database:', err);
+  });
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
   const err = new Error('Not Found');
