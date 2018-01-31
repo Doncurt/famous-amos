@@ -1,13 +1,15 @@
 const express = require('express');
 const router = express.Router();
 
-let pets = require('../json/pets')
-let comments = require('../json/comments')
-
-
+let comments = require('../json/comments');
+const model = require('../db/models/');
+const Pet = require('../db/models/').Pet;
+// INDEX
+// petId
 // INDEX
 router.get('/', (req, res) => {
-  res.send(pets);
+    Pet.findAll().then(pets =>
+      {res.send(pets);});
 });
 
 // NEW
@@ -15,32 +17,46 @@ router.get('/new', (req, res) => {
   res.render('pets-new');
 });
 
+
 // SHOW
-router.get('/:index', (req, res) => {  
-  res.render('pets-show', { pet: pets[req.params.index], comments: comments });
+router.get('/:index', (req, res) => {
+  Pet.findById(req.params.index, {
+      include: {
+          model: model.Comment
+      }
+  }).then(pet => {
+      res.render('pets-show', { pet });
+  });
 });
 
 // CREATE
 router.post('/', (req, res) => {
-    pets.unshift(req.body);
-
+    Pet.create(req.body);
     res.redirect('/');
 });
 
 // EDIT
 router.get('/:index/edit', (req, res) => {
-  res.render('pets-edit', { pet: pets[req.params.index]});
+    Pet.findById(req.params.index).then(pet => {
+        res.render('pets-edit', { pet });
+    });
 });
 
 // UPDATE
 router.put('/:index', (req, res) => {
-  res.redirect(`/pets/${req.params.index}`)
+    Pet.findById(req.params.index).then(pet => {
+        return pet.update(req.body);
+    }).then(() => {
+        res.redirect(`/pets/${req.params.index}`);
+    }).catch((err) => {
+        res.send(err);
+    });
 });
+
 
 // DESTROY
 router.delete('/:index', (req, res) => {
   res.redirect('/');
 });
-
 
 module.exports = router;

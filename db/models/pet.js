@@ -1,7 +1,6 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   var Pet = sequelize.define('Pet', {
-    id: DataTypes.NUMBER,
     name: DataTypes.STRING,
     species: DataTypes.STRING,
     birthday: DataTypes.DATE,
@@ -9,12 +8,10 @@ module.exports = (sequelize, DataTypes) => {
     picUrl: DataTypes.STRING,
     picUrlSq: DataTypes.STRING,
     description: DataTypes.STRING
-  }, {
-    classMethods: {
-      associate: function(models) {
-        // associations can be defined here
-      }
-    }
+
   });
-  return Pet;
+  // associating pet to comments
+  Pet.associate = function(models){
+      Pet.hasMany(models.Comment);
+  };return Pet;
 };
