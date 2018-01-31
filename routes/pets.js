@@ -4,10 +4,10 @@ const router = express.Router();
 let comments = require('../json/comments');
 const model = require('../db/models/');
 const Pet = require('../db/models/').Pet;
-// INDEX
-// petId
+
 // INDEX
 router.get('/', (req, res) => {
+  //Uses PET model to  find all the pet uobjects then posts
     Pet.findAll().then(pets =>
       {res.send(pets);});
 });
@@ -20,6 +20,7 @@ router.get('/new', (req, res) => {
 
 // SHOW
 router.get('/:index', (req, res) => {
+  // shows a cetain pet and it's associated comments
   Pet.findById(req.params.index, {
       include: {
           model: model.Comment
@@ -31,12 +32,14 @@ router.get('/:index', (req, res) => {
 
 // CREATE
 router.post('/', (req, res) => {
+  //creates a new pet object
     Pet.create(req.body);
     res.redirect('/');
 });
 
 // EDIT
 router.get('/:index/edit', (req, res) => {
+  // Finds the pet object and eddits its infomation
     Pet.findById(req.params.index).then(pet => {
         res.render('pets-edit', { pet });
     });

@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
     content: DataTypes.STRING
 
   });
-// associating comments to pets 
+// associating comments to pets
   Comment.associate = function(models){
       Comment.belongsTo(models.Pet);
   };
