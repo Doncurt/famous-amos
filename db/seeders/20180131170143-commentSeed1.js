@@ -10,6 +10,6 @@ module.exports = {
   },
 
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('Comment')
+    return queryInterface.dropTable('Comment', null, {}))
   }
 };

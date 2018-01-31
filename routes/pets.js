@@ -1,17 +1,17 @@
 const express = require('express');
 const router = express.Router();
 
-let comments = require('../json/comments');
+const comments = require('../json/comments');
 const model = require('../db/models/');
-const Pet = require('../db/models/').Pet;
+const Pet = require('../db/models/');
 
 // INDEX
 router.get('/', (req, res) => {
   //Uses PET model to  find all the pet uobjects then posts
     Pet.findAll().then(pets =>
       {res.send(pets);});
-});
 
+});
 // NEW
 router.get('/new', (req, res) => {
   res.render('pets-new');
@@ -19,12 +19,14 @@ router.get('/new', (req, res) => {
 
 
 // SHOW
-router.get('/:index', (req, res) => {
-  // shows a cetain pet and it's associated comments
-  Pet.findById(req.params.index, {
+router.get('/:petId', (req, res) => {
+  model.Pet.findById(req.params.petId, {
       include: {
-          model: model.Comment
-      }
+          model: model.Comment,
+      },
+      order: [
+          [ model.Comment, 'id', 'DESC']
+      ]
   }).then(pet => {
       res.render('pets-show', { pet });
   });
@@ -32,25 +34,23 @@ router.get('/:index', (req, res) => {
 
 // CREATE
 router.post('/', (req, res) => {
-  //creates a new pet object
-    Pet.create(req.body);
+    model.Pet.create(req.body);
     res.redirect('/');
 });
 
 // EDIT
-router.get('/:index/edit', (req, res) => {
-  // Finds the pet object and eddits its infomation
-    Pet.findById(req.params.index).then(pet => {
+router.get('/:petId/edit', (req, res) => {
+    model.Pet.findById(req.params.petId).then(pet => {
         res.render('pets-edit', { pet });
     });
 });
 
 // UPDATE
-router.put('/:index', (req, res) => {
-    Pet.findById(req.params.index).then(pet => {
+router.put('/:petId', (req, res) => {
+    model.Pet.findById(req.params.petId).then(pet => {
         return pet.update(req.body);
     }).then(() => {
-        res.redirect(`/pets/${req.params.index}`);
+        res.redirect(`/pets/${req.params.petId}`);
     }).catch((err) => {
         res.send(err);
     });
@@ -58,7 +58,7 @@ router.put('/:index', (req, res) => {
 
 
 // DESTROY
-router.delete('/:index', (req, res) => {
+router.delete('/:petId', (req, res) => {
   res.redirect('/');
 });
 
