@@ -4,12 +4,11 @@ module.exports = (sequelize, DataTypes) => {
     first_name: DataTypes.STRING,
     last_name: DataTypes.STRING,
     bio: DataTypes.TEXT
-  }, {
-    classMethods: {
-      associate: function(models) {
-        // associations can be defined here
-      }
-    }
   });
+  User.associate = function(models){
+      User.hasMany(models.Pet);
+      // User.sync(force:true);
+      
+      };
   return User;
 };

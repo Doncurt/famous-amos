@@ -7,11 +7,16 @@ module.exports = (sequelize, DataTypes) => {
     favoriteFood: DataTypes.STRING,
     picUrl: DataTypes.STRING,
     picUrlSq: DataTypes.STRING,
-    description: DataTypes.STRING
+    description: DataTypes.STRING,
+    createdAt: DataTypes.DATE,
+    updatedAt: DataTypes.DATE
 
   });
   // associating pet to comments
   Pet.associate = function(models){
       Pet.hasMany(models.Comment);
-  };return Pet;
+     Pet.belongsTo(models.User);
+     
+  };
+  return Pet;
 };

@@ -1,21 +1,36 @@
 'use strict';
-
 module.exports = {
-  up: (queryInterface, Sequelize) => {
-    return queryInterface.bulkInsert('Pet', [{
-      name: DataTypes.STRING,
-      species: DataTypes.STRING,
-      birthday: DataTypes.DATE,
-      favoriteFood: DataTypes.STRING,
-      picUrl: DataTypes.STRING,
-      picUrlSq: DataTypes.STRING,
-      description: DataTypes.STRING
-    }], {});
+  up: function(migration, DataTypes, done) {
+    migration.createTable('Pet', {
+      id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+      },
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false
+      },
+      species: {
+        type: DataTypes.STRING
+      },
+      birthday: {
+        type: DataTypes.DATE,
+        allowNull: false
+      },
+      favoriteFood: {
+        type: DataTypes.STRING
+      },
+      picUrl: {
+        type: DataTypes.STRING
+      },
+      picUrlSq: {
+        type: DataTypes.STRING
+      },
+      description: DataTypes.TEXT
+    })
   },
-
-  },
-
-  down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('Pet', null, {});
+  down: function(migration, DataTypes, done) {
+    migration.dropTable('Pet', null, {});
   }
 };
