@@ -61,5 +61,17 @@ router.put('/:petId', (req, res) => {
 router.delete('/:petId', (req, res) => {
   res.redirect('/');
 });
+//SEARCH
 
+router.get('pets/search', function(req, res, next) {
+    models.Pet.findAll({
+        where: {
+            title: {
+                $like: "%" + req.query.term + "%"
+            }
+        }
+    }).then((posts) => {
+        res.render('index', { pets: pets, term: req.query.term })
+    })
+});
 module.exports = router;

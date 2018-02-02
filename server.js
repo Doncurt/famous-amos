@@ -9,18 +9,24 @@ const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override')
-
 const index = require('./routes/index');
 const pets = require('./routes/pets');
 const comments = require('./routes/comments');
 const purchases = require('./routes/purchases');
-
+const flash = require('express-flash');
+const session = require('express-session');
 const app = express();
+//MODUL FOR PAGINATION
+const paginate = require('express-paginate');
+app.use(paginate.middleware(4, 50));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
-
+// Flash
+app.use(cookieParser('keyboard cat'));
+app.use(session({ cookie: { maxAge: 60000 }}));
+app.use(flash());
 // DB set-up
 const Sequelize = require('sequelize');
 const sequelize = new Sequelize('famous-amos-development', 'donovanadams', process.env.SQLPASS, {

@@ -15,7 +15,10 @@ html
         ul.navbar-nav
           li.nav-item
             a.nav-link(href='/pets/new') New Pet
-
+          li.nav-item
+            form(action="/pets/search")
+            input(type="text" name="term" value="#{term}")
+            button(type="submit") Search
     .container
       block content
 

@@ -13,3 +13,6 @@ block content
             .text-right
                 a.card-link(href="/pets/" + index) View #{pet.name}
 
+                - if (messages.info)
+                    #alert
+                      p= messages.info 
