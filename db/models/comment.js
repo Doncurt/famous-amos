@@ -1,7 +1,8 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   var Comment = sequelize.define('Comment', {
-    content: DataTypes.STRING
+    content: {DataTypes.STRING, notNull: true, notEmpty: true},
+    PetId: DataTypes.INTEGER
 
   });
 // associating comments to pets

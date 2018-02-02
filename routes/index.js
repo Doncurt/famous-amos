@@ -8,8 +8,6 @@ router.get('/', (req, res) => {
     model.Pet.findAll().then(pets => {
         res.render('pets-index', { pets });
 
-  //res.render('pets-index', { pets: pets });
- //});
     });
 
 });
