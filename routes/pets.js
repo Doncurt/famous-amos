@@ -5,6 +5,21 @@ const comments = require('../json/comments');
 const model = require('../db/models/');
 const Pet = require('../db/models/');
 
+//SEARCH
+
+router.get('/search', (req, res) => {
+
+   model.Pet.findAll({
+     where: {
+              name: {
+                  $like: "%" + req.query.term + "%"
+               }
+           }
+   }).then((pets) => {
+       console.log(pets)
+   })
+ });
+
 // INDEX
 router.get('/', (req, res) => {
   //Uses PET model to  find all the pet uobjects then posts
@@ -61,17 +76,8 @@ router.put('/:petId', (req, res) => {
 router.delete('/:petId', (req, res) => {
   res.redirect('/');
 });
-//SEARCH
 
-router.get('pets/search', function(req, res, next) {
-    models.Pet.findAll({
-        where: {
-            title: {
-                $like: "%" + req.query.term + "%"
-            }
-        }
-    }).then((posts) => {
-        res.render('index', { pets: pets, term: req.query.term })
-    })
-});
+
+
+
 module.exports = router;
