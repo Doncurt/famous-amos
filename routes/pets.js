@@ -20,6 +20,7 @@ router.get('/search', (req, res) => {
    }).then((pets) => {
        //console.log(pets)
        res.render('pets-index', { pets: pets, term: req.query.term })
+       //console.log('boom');
    })
    //)
  });
