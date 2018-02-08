@@ -1,7 +1,7 @@
 {
   "development": {
-    "username": "donovanadams",
-    "password": null,
+    "username": "postgres",
+    "password": "password",
     "database": "famous-amos-development",
     "host": "127.0.0.1",
     "dialect": "postgres"

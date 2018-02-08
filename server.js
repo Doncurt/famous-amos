@@ -29,7 +29,7 @@ app.use(session({ cookie: { maxAge: 60000 }}));
 app.use(flash());
 // DB set-up
 const Sequelize = require('sequelize');
-const sequelize = new Sequelize('famous-amos-development', 'donovanadams', process.env.SQLPASS, {
+const sequelize = new Sequelize('famous-amos-development', 'postgres', 'password', {
     dialect: 'postgres'
 });
 // override with POST having ?_method=DELETE or ?_method=PUT
@@ -73,5 +73,7 @@ app.use((err, req, res, next) => {
   res.status(err.status || 500);
   res.render('error');
 });
-
+app.listen(process.env.PORT||3000, ()=> {
+  console.log('Server for famous ams listening on port 3000!')
+})
 module.exports = app;
