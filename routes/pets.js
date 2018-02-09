@@ -8,21 +8,16 @@ const Pet = require('../db/models/');
 //SEARCH
 //due to how javascript works with top- down processing search must be at the top
 router.get('/search', (req, res) => {
-  let limit = 50;   // number of records per page
-  let offset = 0;
-  //model.Pet.findAndCountAll(
-   model.Pet.findAll({
-     where: {
-              name: {
-                  $like: "%" + req.query.term + "%"
-               }
-           }
-   }).then((pets) => {
-       //console.log(pets)
-       res.render('pets-index', { pets: pets, term: req.query.term })
-       //console.log('boom');
-   })
-   //)
+  model.Pet.findAll({
+         where: {
+             name: {
+               //Ilike vs like to make it case insensative
+                 $iLike: "%" + req.query.term + "%"
+             }
+         }
+     }).then((pets) => {
+         res.render('pets-index', { pets: pets, term: req.query.term })
+     })
  });
 
 // INDEX
