@@ -15,6 +15,8 @@ const comments = require('./routes/comments');
 const purchases = require('./routes/purchases');
 const flash = require('express-flash');
 const session = require('express-session');
+const nodemailer = require('nodemailer');
+const mg = require('nodemailer-mailgun-transport');
 const app = express();
 //MODUL FOR PAGINATION
 const paginate = require('express-paginate');
@@ -42,6 +44,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+
 
 app.use('/', index);
 app.use('/pets', pets);
