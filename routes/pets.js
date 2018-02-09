@@ -4,6 +4,7 @@ const router = express.Router();
 const comments = require('../json/comments');
 const model = require('../db/models/');
 const Pet = require('../db/models/');
+const multer  = require('multer');
 
 //SEARCH
 //due to how javascript works with top- down processing search must be at the top
@@ -25,6 +26,7 @@ router.get('/search', (req, res) => {
      })
  });
 */
+// after several hours of tinkerking, asked ferdidnand for help and got it up and running. was a code structuring issue
 router.get('/search', (req, res) => {
     let limit = 3;   // number of records per page
     let offset = 0;
