@@ -4,29 +4,64 @@ const router = express.Router();
 const comments = require('../json/comments');
 const model = require('../db/models/');
 const Pet = require('../db/models/');
-const multer  = require('multer');
 
+
+
+// UPLOADING TO AWS S3
+var multer  = require('multer')
+var upload = multer({ dest: 'uploads/' })
+var Upload = require('s3-uploader');
+// Using multer for disk storage on AWS
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/');
+  },
+  //splits the file name on the '/' and also addes the upload date
+  filename: function (req, file, cb) {
+      let extArray = file.mimetype.split("/");
+      let ext = extArray[extArray.length - 1];
+      cb(null, Date.now() + "." + ext);
+  }
+});
+
+var client = new Upload(process.env.S3_BUCKET, {
+  aws: {
+    path: 'posts/coverImg/',
+    region: process.env.S3_REGION,
+    acl: 'public-read',
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+  },
+  cleanup: {
+    versions: true,
+    original: true
+  },
+  versions: [{
+    maxWidth: 320,
+    aspect: '1.618:1',
+    suffix: '-thumbnail'
+  },{
+    maxWidth: 1000,
+    aspect: '2.414:1', //silver ratio
+    suffix: '-desktop'
+  },{
+    maxWidth: 320,
+    aspect: '2.414:1', //silver ratio
+    suffix: '-mobile'
+  },{
+    maxWidth: 100,
+    aspect: '1:1',
+    suffix: '-square'
+  }]
+});
+
+
+
+
+// after several hours of tinkerking, asked ferdidnand for help and got it up and running. was a code structuring issue
 //SEARCH
 //due to how javascript works with top- down processing search must be at the top
 //WORKING ATTEMPT
-/*
-router.get('/search', (req, res) => {
-
-  model.Pet.findAll({
-         where: {
-           $or:[
-                  { name: { $iLike: "%" + req.query.term + "%" } },
-                 { description: { $iLike: "%" + req.query.term + "%" } }
-               ]
-         },
-
-     }).then((pets) => {
-       console.log(pets);
-         res.render('pets-index', { pets: pets, term: req.query.term })
-     })
- });
-*/
-// after several hours of tinkerking, asked ferdidnand for help and got it up and running. was a code structuring issue
 router.get('/search', (req, res) => {
     let limit = 3;   // number of records per page
     let offset = 0;

@@ -1,11 +1,12 @@
+
 extends layout
 
 block content
-    
+
     .row.justify-content-center
         .col-sm-6
             legend New Pet
-            form(action="/pets", method="POST")
+            form(action="/pets", method="POST" enctype="multipart/form-data")
                 .form-group
                     label Name
                     input.form-control(name="name")
@@ -13,18 +14,19 @@ block content
                     label Species
                     input.form-control(name="species")
                 .form-group
-                    label Rectangular Image URL
-                    input.form-control(name="picUrl") 
+                    //- label Rectangular Image URL
+                    label Picture
+                    input.form-control(name="picUrl" type="file")
                 .form-group
                     label Square Image URL
-                    input.form-control(name="picUrlSq")   
+                    input.form-control(name="picUrlSq")
                 .form-group
                     label Birthday
-                    input.form-control(name="birthday")    
+                    input.form-control(name="birthday")
                 .form-group
                     label Favorite Food
-                    input.form-control(name="favoriteFood") 
+                    input.form-control(name="favoriteFood")
                 .form-group
                     label Description
-                    textarea.form-control(name="description")   
+                    textarea.form-control(name="description")
                 button(type="submit").btn.btn-primary Save

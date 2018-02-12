@@ -1,7 +1,7 @@
 // EmailService.js
 const nodemailer = require('nodemailer')
 const mailgunTransport = require('nodemailer-mailgun-transport')
-// Configure transport options
+// Configure transport options set by the .env file
 const mailgunOptions = {
   auth: {
     api_key: process.env.MAILGUN_ACTIVE_API_KEY,
